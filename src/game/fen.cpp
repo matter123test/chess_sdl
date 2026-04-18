@@ -125,8 +125,38 @@ void FENToBoard(const std::string& FEN_string, ChessBoard& board)
 
 std::string BoardToFEN(ChessBoard& board)
 {
-	// TODO: implement
-	return std::string();
+	std::string FEN_str;
+
+	for (int y = 0; y < 8; y++) {
+
+		int counter = 0;
+
+		for (int x = 0; x < 8; x++) {
+
+			std::optional<char> c = GetCharFromChessPiece(board[y][x]);
+
+			if (c.has_value()) {
+
+				if (counter > 0) {
+					FEN_str += '0' + counter;
+					counter = 0;
+				}
+
+				FEN_str += c.value();
+			}
+			else {
+				counter++;
+			}
+		}
+
+		if (counter > 0)
+			FEN_str += '0' + counter;
+
+		if (y != 8 - 1)
+			FEN_str += '/';
+	}
+
+	return FEN_str;
 }
 
 void ClearBoard(ChessBoard& board)

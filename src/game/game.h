@@ -22,10 +22,11 @@ public:
 	void LoadTextures();
 	void UnloadTextures();
 
+	ChessBoard board{};
+
 private:
 	SDL_Renderer* m_renderer = nullptr;
 
-	ChessBoard board{};
 	TextureArray textures{};
 };
 

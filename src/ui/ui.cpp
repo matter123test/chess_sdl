@@ -25,7 +25,7 @@ void UI::Update(SDL_Event* event)
 	ImGui_ImplSDL3_ProcessEvent(event);
 }
 
-void UI::Build()
+void UI::Build(ChessBoard& board)
 {
 	// Start the Dear ImGui frame
 	ImGui_ImplSDL3_NewFrame();
@@ -33,6 +33,17 @@ void UI::Build()
 	ImGui::NewFrame();
 
 	ImGui::Begin("Test");
+
+	if (ImGui::ArrowButton("in", ImGuiDir_Left)) { ClearBoard(board); FENToBoard(input_FEN_str, board); }
+	ImGui::SameLine();
+	ImGui::InputText("FEN IN", input_FEN_str, sizeof(input_FEN_str));
+
+	if (ImGui::ArrowButton("out", ImGuiDir_Right)) { output_FEN_str = BoardToFEN(board); };
+	ImGui::SameLine();
+	ImGui::InputText("FEN OUT", output_FEN_str.data(), output_FEN_str.capacity());
+
+	if (ImGui::Button("RESET")) { ResetBoard(board); }
+
 	ImGui::End();
 
 	ImGui::Render();

@@ -71,7 +71,7 @@ void Window::Update()
 
 void Window::Render()
 {
-	ui.Build();
+	ui.Build(game.board);
 
 	// Clear screen
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
