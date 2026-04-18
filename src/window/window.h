@@ -1,6 +1,7 @@
 #pragma once
 
-#include "SDL.h"
+#include <SDL3/SDL.h>
+#include "../ui/ui.h"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
@@ -25,4 +26,6 @@ private:
 
 	int exit_code{ 0 };
 	void Stop(int code);
+
+	UI ui;
 };

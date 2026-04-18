@@ -8,23 +8,22 @@ endif()
 
 project ("chess_sdl")
 
-find_package(SDL2 CONFIG REQUIRED)
-find_package(SDL2_image CONFIG REQUIRED)
+find_package(SDL3 CONFIG REQUIRED)
+ find_package(SDL3_image CONFIG REQUIRED)
+
 find_package(imgui CONFIG REQUIRED)
-    
+
 # Add source to this project's executable.
-add_executable (${PROJECT_NAME} "src/main.cpp" "src/window.cpp" "src/window.h"      )
+add_executable (${PROJECT_NAME} "src/main.cpp" "src/window/window.cpp" "src/window/window.h" "src/ui/ui.cpp")
 
 target_link_libraries(${PROJECT_NAME}
-        PRIVATE
+       PRIVATE
 
-        $<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
-        $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
-        $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>
+       SDL3::SDL3
+       $<IF:$<TARGET_EXISTS:SDL3_image::SDL3_image-shared>,SDL3_image::SDL3_image-shared,SDL3_image::SDL3_image-static>
 
-        imgui::imgui
+       imgui::imgui
 )
-
 
 file(COPY ${CMAKE_SOURCE_DIR}/res DESTINATION ${CMAKE_BINARY_DIR})
 

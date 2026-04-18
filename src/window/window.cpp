@@ -1,5 +1,7 @@
 #include "window.h"
-#include <SDL_image.h>
+
+#include <SDL3/SDL_render.h>
+#include <SDL3_image/SDL_image.h>
 
 Window::Window()
 {
@@ -12,21 +14,20 @@ Window::Window()
 		SDL_WINDOW_RESIZABLE
 	);
 
-	window = SDL_CreateWindow("chess", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, window_flags);
+	window = SDL_CreateWindow("chess", WINDOW_WIDTH, WINDOW_HEIGHT, window_flags);
 	if (!window) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create window: %s", SDL_GetError());
 		Stop(3);
 	}
 
-	auto renderer_flags = static_cast<SDL_RendererFlags>(
-		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
-	);
 
-	renderer = SDL_CreateRenderer(window, -1, renderer_flags);
+	renderer = SDL_CreateRenderer(window, NULL);
 	if (!renderer) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create renderer: %s", SDL_GetError());
 		Stop(3);
 	}
+
+	ui = UI(window, renderer);
 }
 
 Window::~Window()
@@ -49,23 +50,30 @@ int Window::Run()
 
 void Window::Update()
 {
-	SDL_PollEvent(&event);
-	if (event.type == SDL_QUIT) {
-		is_running = false;
-	}
-	else if (event.type == SDL_KEYDOWN) {
-		if (event.key.keysym.sym == SDLK_ESCAPE) is_running = false;
-	}
-	else if (event.type == SDL_MOUSEBUTTONDOWN) {
-		SDL_Log("X %i Y %i", event.motion.x, event.motion.y);
+	while (SDL_PollEvent(&event)) {
+		ui.Update(&event);
+
+		if (event.type == SDL_EVENT_QUIT) {
+			is_running = false;
+		}
+		else if (event.type == SDL_EVENT_KEY_DOWN) {
+			if (event.key.key == SDLK_ESCAPE) is_running = false;
+		}
+		else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
+			SDL_Log("X %i Y %i", (int)event.motion.x, (int)event.motion.y);
+		}
 	}
 }
 
 void Window::Render()
 {
+	ui.Build();
+
 	// Clear screen
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(renderer);
+
+	ui.Render();
 
 	SDL_RenderPresent(renderer);
 }
