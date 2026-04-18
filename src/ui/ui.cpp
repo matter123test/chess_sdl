@@ -1,4 +1,5 @@
 #include "ui.h"
+#include <imgui_stdlib.h>
 
 UI::UI(SDL_Window* window, SDL_Renderer* renderer)
 	:m_window(window), m_renderer(renderer)
@@ -40,7 +41,7 @@ void UI::Build(ChessBoard& board)
 
 	if (ImGui::ArrowButton("out", ImGuiDir_Right)) { output_FEN_str = BoardToFEN(board); };
 	ImGui::SameLine();
-	ImGui::InputText("FEN OUT", output_FEN_str.data(), output_FEN_str.capacity());
+	ImGui::InputText("FEN OUT", &output_FEN_str);
 
 	if (ImGui::Button("RESET")) { ResetBoard(board); }
 
