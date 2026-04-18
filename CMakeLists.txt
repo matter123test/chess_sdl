@@ -14,7 +14,15 @@ find_package(SDL3 CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 
 # Add source to this project's executable.
-add_executable (${PROJECT_NAME} "src/main.cpp" "src/window/window.cpp" "src/window/window.h" "src/ui/ui.cpp")
+add_executable (${PROJECT_NAME})
+
+file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS src/*.cpp)
+file(GLOB_RECURSE HEADER_FILES CONFIGURE_DEPENDS src/*.hpp)
+
+target_sources(${PROJECT_NAME} PRIVATE
+    ${SOURCE_FILES}
+    ${HEADER_FILES}
+)
 
 target_link_libraries(${PROJECT_NAME}
        PRIVATE

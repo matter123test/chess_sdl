@@ -5,7 +5,7 @@
 
 Window::Window()
 {
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+	if (!SDL_Init(SDL_INIT_VIDEO)) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
 		Stop(3);
 	}
@@ -28,10 +28,15 @@ Window::Window()
 	}
 
 	ui = UI(window, renderer);
+	game = Game(renderer);
+
+	game.LoadTextures();
 }
 
 Window::~Window()
 {
+	game.UnloadTextures();
+
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
@@ -50,6 +55,8 @@ int Window::Run()
 
 void Window::Update()
 {
+	game.Update();
+
 	while (SDL_PollEvent(&event)) {
 		ui.Update(&event);
 
@@ -58,9 +65,6 @@ void Window::Update()
 		}
 		else if (event.type == SDL_EVENT_KEY_DOWN) {
 			if (event.key.key == SDLK_ESCAPE) is_running = false;
-		}
-		else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
-			SDL_Log("X %i Y %i", (int)event.motion.x, (int)event.motion.y);
 		}
 	}
 }
@@ -73,6 +77,7 @@ void Window::Render()
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(renderer);
 
+	game.Render();
 	ui.Render();
 
 	SDL_RenderPresent(renderer);

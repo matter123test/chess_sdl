@@ -1,0 +1,91 @@
+#include "game.h"
+#include "textures.h"
+#include "fen.h"
+#include <SDL3_image/SDL_image.h>
+#include <SDL3/SDL_render.h>
+
+#define COL_WHITE 255, 255, 255, 255
+#define COL_BROWN 122, 86,  50,  255
+
+void DrawPiece(SDL_Renderer* renderer, TextureArray& textures, ChessPiece& piece, int x, int y) {
+	const SDL_FRect dest = { (float)x * CELL_SIZE, (float)y * CELL_SIZE, CELL_SIZE, CELL_SIZE };
+
+	int index = static_cast<int>(piece) - 1;
+	SDL_RenderTexture(renderer, textures[index], NULL, &dest);
+}
+
+void Game::RenderBoard() {
+	for (int x = 0; x < 8; x++) {
+		for (int y = 0; y < 8; y++) {
+
+			// Draw board texture
+			if ((x + y) % 2 == 0) {
+				const SDL_FRect rec = { (float)x * CELL_SIZE, (float)y * CELL_SIZE, CELL_SIZE, CELL_SIZE };
+				SDL_SetRenderDrawColor(m_renderer, COL_WHITE);
+				SDL_RenderFillRect(m_renderer, &rec);
+			}
+			else {
+				const SDL_FRect rec = { (float)x * CELL_SIZE, (float)y * CELL_SIZE, CELL_SIZE, CELL_SIZE };
+				SDL_SetRenderDrawColor(m_renderer, COL_BROWN);
+				SDL_RenderFillRect(m_renderer, &rec);
+			}
+
+			// Draw piece texture
+			if (board[y][x] != ChessPiece::EMPTY) {
+				DrawPiece(m_renderer, textures, board[y][x], x, y);
+			}
+		}
+	}
+}
+
+Game::Game(SDL_Renderer* renderer) : m_renderer(renderer)
+{
+	Init();
+}
+
+Game::~Game()
+{
+	UnloadTextures();
+}
+
+void Game::Init()
+{
+	FENToBoard(STARTING_POS_STR, board);
+}
+
+void Game::Update()
+{
+}
+
+void Game::Render()
+{
+	RenderBoard();
+}
+
+void Game::LoadTextures()
+{
+	for (size_t i = 0; i < TEXTURES_PATHS.size(); i++) {
+		SDL_Texture* tex = IMG_LoadTexture(m_renderer, TEXTURES_PATHS[i]);
+
+		if (!tex) {
+			SDL_Log("Error while loading %s: %s", TEXTURES_PATHS[i], SDL_GetError());
+		}
+		else {
+			SDL_Log("Loaded texture: %s", TEXTURES_PATHS[i]);
+			textures[i] = tex;
+		}
+	}
+}
+
+void Game::UnloadTextures()
+{
+	for (auto& tex : textures) {
+		SDL_DestroyTexture(tex);
+	}
+}
+
+SDL_Texture* GetTextureFromPiece(TextureArray& textures, ChessPiece& piece)
+{
+	int index = static_cast<int>(piece) - 1;
+	return textures[index];
+}

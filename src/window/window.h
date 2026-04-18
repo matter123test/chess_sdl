@@ -2,6 +2,7 @@
 
 #include <SDL3/SDL.h>
 #include "../ui/ui.h"
+#include "../game/game.h"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
@@ -15,9 +16,9 @@ public:
 	int Run();
 
 private:
-	SDL_Window* window = NULL;
-	SDL_Renderer* renderer = NULL;
-	SDL_Surface* surface = NULL;
+	SDL_Window* window = nullptr;
+	SDL_Renderer* renderer = nullptr;
+	SDL_Surface* surface = nullptr;
 	SDL_Event event;
 
 	bool is_running = true;
@@ -28,4 +29,5 @@ private:
 	void Stop(int code);
 
 	UI ui;
+	Game game;
 };
