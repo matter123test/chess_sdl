@@ -5,9 +5,6 @@
 #include <SDL3_image/SDL_image.h>
 #include <SDL3/SDL_render.h>
 
-#define COL_WHITE 255, 255, 255, 255
-#define COL_BROWN 122, 86,  50,  255
-
 void DrawPiece(SDL_Renderer* renderer, TextureArray& textures, ChessPiece& piece, int x, int y) {
 	const SDL_FRect dest = { (float)x * CELL_SIZE, (float)y * CELL_SIZE, CELL_SIZE, CELL_SIZE };
 
@@ -22,12 +19,12 @@ void Game::RenderBoard() {
 			// Draw board texture
 			if ((x + y) % 2 == 0) {
 				const SDL_FRect rec = { (float)x * CELL_SIZE, (float)y * CELL_SIZE, CELL_SIZE, CELL_SIZE };
-				SDL_SetRenderDrawColor(m_renderer, COL_WHITE);
+				SDL_SetRenderDrawColor(m_renderer, color_a[0], color_a[1], color_a[2], 255);
 				SDL_RenderFillRect(m_renderer, &rec);
 			}
 			else {
 				const SDL_FRect rec = { (float)x * CELL_SIZE, (float)y * CELL_SIZE, CELL_SIZE, CELL_SIZE };
-				SDL_SetRenderDrawColor(m_renderer, COL_BROWN);
+				SDL_SetRenderDrawColor(m_renderer, color_b[0], color_b[1], color_b[2], 255);
 				SDL_RenderFillRect(m_renderer, &rec);
 			}
 

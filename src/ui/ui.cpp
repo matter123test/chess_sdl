@@ -45,6 +45,9 @@ void UI::Build(ChessBoard& board)
 
 	if (ImGui::Button("RESET")) { ResetBoard(board); }
 
+	ImGui::ColorEdit3("A", color_a);
+	ImGui::ColorEdit3("B", color_b);
+
 	ImGui::End();
 
 	ImGui::Render();
@@ -53,4 +56,15 @@ void UI::Build(ChessBoard& board)
 void UI::Render()
 {
 	ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), m_renderer);
+}
+
+void UI::HandleColors(int(&color_a)[3], int(&color_b)[3])
+{
+	color_a[0] = this->color_a[0] * 255;
+	color_a[1] = this->color_a[1] * 255;
+	color_a[2] = this->color_a[2] * 255;
+
+	color_b[0] = this->color_b[0] * 255;
+	color_b[1] = this->color_b[1] * 255;
+	color_b[2] = this->color_b[2] * 255;
 }

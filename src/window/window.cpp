@@ -67,6 +67,8 @@ void Window::Update()
 			if (event.key.key == SDLK_ESCAPE) is_running = false;
 		}
 	}
+
+	ui.HandleColors(game.color_a, game.color_b);
 }
 
 void Window::Render()

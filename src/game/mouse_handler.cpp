@@ -14,15 +14,15 @@ SDL_Texture* GetTextureFromPiece(TextureArray& textures, ChessPiece& piece)
 	return textures[index];
 }
 
-inline bool IsInBounds(int x, int y) {
-	return (x >= 0 && x < 8 && y >= 0 && y < 8);
-}
-
 void MouseHandler::Handle(TextureArray& textures, ChessBoard &board) {
 
 	Uint32 buttons = SDL_GetMouseState(&m_x, &m_y);
 	left_held = (buttons & SDL_BUTTON_LMASK);
 	right_held = (buttons & SDL_BUTTON_RMASK);
+
+	auto is_in_bounds = [](int x, int y) {
+		return (x >= 0 && x < 8 && y >= 0 && y < 8);
+	};
 
 	auto reset_selected_piece_to_old_pos = [&]() {
 		board[old_y][old_x] = selected_piece;
@@ -37,7 +37,7 @@ void MouseHandler::Handle(TextureArray& textures, ChessBoard &board) {
 		int board_x = m_x / CELL_SIZE;
 		int board_y = m_y / CELL_SIZE;
 
-		if (!IsInBounds(board_x, board_y)) return;
+		if (!is_in_bounds(board_x, board_y)) return;
 
 		selected_piece = board[board_y][board_x];
 		if (selected_piece == EMPTY) return;
@@ -56,7 +56,7 @@ void MouseHandler::Handle(TextureArray& textures, ChessBoard &board) {
 		int board_x = m_x / CELL_SIZE;
 		int board_y = m_y / CELL_SIZE;
 
-		if (!IsInBounds(board_x, board_y)) {
+		if (!is_in_bounds(board_x, board_y)) {
 			reset_selected_piece_to_old_pos();
 			return;
 		};
@@ -78,7 +78,7 @@ void MouseHandler::Handle(TextureArray& textures, ChessBoard &board) {
 		int board_x = m_x / CELL_SIZE;
 		int board_y = m_y / CELL_SIZE;
 
-		if (!IsInBounds(board_x, board_y)) return;
+		if (!is_in_bounds(board_x, board_y)) return;
 
 		board[board_y][board_x] = EMPTY;
 	}

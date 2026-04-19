@@ -23,6 +23,8 @@ public:
 	void UnloadTextures();
 
 	ChessBoard board{};
+	int color_a[3];
+	int color_b[3];
 
 private:
 	SDL_Renderer* m_renderer = nullptr;
