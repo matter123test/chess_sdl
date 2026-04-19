@@ -24,6 +24,15 @@ void MouseHandler::Handle(TextureArray& textures, ChessBoard &board) {
 	left_held = (buttons & SDL_BUTTON_LMASK);
 	right_held = (buttons & SDL_BUTTON_RMASK);
 
+	auto reset_selected_piece_to_old_pos = [&]() {
+		board[old_y][old_x] = selected_piece;
+
+		// Reset selected piece data
+		selected_piece_tex = nullptr;
+		is_piece_being_dragged = false;
+	};
+
+
 	if (left_held && !is_piece_being_dragged) {
 		int board_x = m_x / CELL_SIZE;
 		int board_y = m_y / CELL_SIZE;
@@ -48,18 +57,16 @@ void MouseHandler::Handle(TextureArray& textures, ChessBoard &board) {
 		int board_y = m_y / CELL_SIZE;
 
 		if (!IsInBounds(board_x, board_y)) {
-			board[old_y][old_x] = selected_piece;
-
-			// Reset selected piece data
-			selected_piece_tex = nullptr;
-			is_piece_being_dragged = false;
-
+			reset_selected_piece_to_old_pos();
 			return;
 		};
 
 		// Check the if the selected piece is colliding
 		ChessPiece piece = board[board_y][board_x];
-		if (piece != EMPTY) return;
+		if (piece != EMPTY) {
+			reset_selected_piece_to_old_pos();
+			return;
+		}
 
 		board[board_y][board_x] = selected_piece;
 
