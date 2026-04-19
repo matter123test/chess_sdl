@@ -69,6 +69,7 @@ void Window::Update()
 	}
 
 	ui.HandleColors(game.color_a, game.color_b);
+	ui.HandelCellSize(game.cell_size);
 }
 
 void Window::Render()

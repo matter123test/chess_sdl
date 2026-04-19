@@ -14,7 +14,7 @@ SDL_Texture* GetTextureFromPiece(TextureArray& textures, ChessPiece& piece)
 	return textures[index];
 }
 
-void MouseHandler::Handle(TextureArray& textures, ChessBoard &board) {
+void MouseHandler::Handle(TextureArray& textures, ChessBoard &board, int cell_size) {
 
 	Uint32 buttons = SDL_GetMouseState(&m_x, &m_y);
 	left_held = (buttons & SDL_BUTTON_LMASK);
@@ -34,8 +34,8 @@ void MouseHandler::Handle(TextureArray& textures, ChessBoard &board) {
 
 
 	if (left_held && !is_piece_being_dragged) {
-		int board_x = m_x / CELL_SIZE;
-		int board_y = m_y / CELL_SIZE;
+		int board_x = m_x / cell_size;
+		int board_y = m_y / cell_size;
 
 		if (!is_in_bounds(board_x, board_y)) return;
 
@@ -53,8 +53,8 @@ void MouseHandler::Handle(TextureArray& textures, ChessBoard &board) {
 		board[board_y][board_x] = EMPTY;
 	}
 	else if (!left_held && is_piece_being_dragged) {
-		int board_x = m_x / CELL_SIZE;
-		int board_y = m_y / CELL_SIZE;
+		int board_x = m_x / cell_size;
+		int board_y = m_y / cell_size;
 
 		if (!is_in_bounds(board_x, board_y)) {
 			reset_selected_piece_to_old_pos();
@@ -75,8 +75,8 @@ void MouseHandler::Handle(TextureArray& textures, ChessBoard &board) {
 		is_piece_being_dragged = false;
 	}
 	else if (right_held && !is_piece_being_dragged) {
-		int board_x = m_x / CELL_SIZE;
-		int board_y = m_y / CELL_SIZE;
+		int board_x = m_x / cell_size;
+		int board_y = m_y / cell_size;
 
 		if (!is_in_bounds(board_x, board_y)) return;
 
@@ -84,9 +84,9 @@ void MouseHandler::Handle(TextureArray& textures, ChessBoard &board) {
 	}
 }
 
-void MouseHandler::Render(SDL_Renderer *renderer) {
+void MouseHandler::Render(SDL_Renderer *renderer, int cell_size) {
 	if (is_piece_being_dragged && selected_piece_tex != nullptr) {
-		const SDL_FRect dest = { m_x - CELL_SIZE / 2, m_y - CELL_SIZE / 2, CELL_SIZE, CELL_SIZE };
+		const SDL_FRect dest = { m_x - cell_size / 2, m_y - cell_size / 2, cell_size, cell_size };
 		SDL_RenderTexture(renderer, selected_piece_tex, NULL, &dest);
 	}
 }

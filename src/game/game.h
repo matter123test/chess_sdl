@@ -4,8 +4,6 @@
 #include <SDL3/SDL_render.h>
 #include <array>
 
-#define CELL_SIZE 50
-
 class Game
 {
 public:
@@ -25,6 +23,8 @@ public:
 	ChessBoard board{};
 	int color_a[3];
 	int color_b[3];
+
+	int cell_size = 50;
 
 private:
 	SDL_Renderer* m_renderer = nullptr;

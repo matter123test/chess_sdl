@@ -5,8 +5,8 @@
 #include <SDL3_image/SDL_image.h>
 #include <SDL3/SDL_render.h>
 
-void DrawPiece(SDL_Renderer* renderer, TextureArray& textures, ChessPiece& piece, int x, int y) {
-	const SDL_FRect dest = { (float)x * CELL_SIZE, (float)y * CELL_SIZE, CELL_SIZE, CELL_SIZE };
+void DrawPiece(SDL_Renderer* renderer, TextureArray& textures, ChessPiece& piece, int x, int y, int cell_size) {
+	const SDL_FRect dest = { (float)x * cell_size, (float)y * cell_size, cell_size, cell_size };
 
 	int index = static_cast<int>(piece) - 1;
 	SDL_RenderTexture(renderer, textures[index], NULL, &dest);
@@ -18,19 +18,19 @@ void Game::RenderBoard() {
 
 			// Draw board texture
 			if ((x + y) % 2 == 0) {
-				const SDL_FRect rec = { (float)x * CELL_SIZE, (float)y * CELL_SIZE, CELL_SIZE, CELL_SIZE };
+				const SDL_FRect rec = { (float)x * cell_size, (float)y * cell_size, cell_size, cell_size };
 				SDL_SetRenderDrawColor(m_renderer, color_a[0], color_a[1], color_a[2], 255);
 				SDL_RenderFillRect(m_renderer, &rec);
 			}
 			else {
-				const SDL_FRect rec = { (float)x * CELL_SIZE, (float)y * CELL_SIZE, CELL_SIZE, CELL_SIZE };
+				const SDL_FRect rec = { (float)x * cell_size, (float)y * cell_size, cell_size, cell_size };
 				SDL_SetRenderDrawColor(m_renderer, color_b[0], color_b[1], color_b[2], 255);
 				SDL_RenderFillRect(m_renderer, &rec);
 			}
 
 			// Draw piece texture
 			if (board[y][x] != ChessPiece::EMPTY) {
-				DrawPiece(m_renderer, textures, board[y][x], x, y);
+				DrawPiece(m_renderer, textures, board[y][x], x, y, cell_size);
 			}
 		}
 	}
@@ -53,14 +53,14 @@ void Game::Init()
 
 void Game::Update()
 {
-	MouseHandler::Handle(textures, board);
+	MouseHandler::Handle(textures, board, cell_size);
 }
 
 void Game::Render()
 {
 	RenderBoard();
 
-	MouseHandler::Render(m_renderer);
+	MouseHandler::Render(m_renderer, cell_size);
 }
 
 void Game::LoadTextures()

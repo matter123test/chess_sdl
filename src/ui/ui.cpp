@@ -48,6 +48,8 @@ void UI::Build(ChessBoard& board)
 	ImGui::ColorEdit3("A", color_a);
 	ImGui::ColorEdit3("B", color_b);
 
+	ImGui::SliderInt("CELL SIZE", &cell_size, 2, 100);
+
 	ImGui::End();
 
 	ImGui::Render();
@@ -67,4 +69,9 @@ void UI::HandleColors(int(&color_a)[3], int(&color_b)[3])
 	color_b[0] = this->color_b[0] * 255;
 	color_b[1] = this->color_b[1] * 255;
 	color_b[2] = this->color_b[2] * 255;
+}
+
+void UI::HandelCellSize(int& cell_size)
+{
+	cell_size = this->cell_size;
 }
