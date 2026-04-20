@@ -68,8 +68,9 @@ void Window::Update()
 		}
 	}
 
-	ui.HandleColors(game.color_a, game.color_b);
-	ui.HandelCellSize(game.cell_size);
+	ui.HandleColors(game.color_a, game.color_b, game.color_c);
+	ui.HandleCellSize(game.cell_size);
+	ui.HandleShowMoves(game.show_moves);
 }
 
 void Window::Render()
@@ -77,7 +78,7 @@ void Window::Render()
 	ui.Build(game.board);
 
 	// Clear screen
-	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
+	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 	SDL_RenderClear(renderer);
 
 	game.Render();

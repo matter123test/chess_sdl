@@ -27,7 +27,13 @@ void Game::RenderBoard() {
 				SDL_SetRenderDrawColor(m_renderer, color_b[0], color_b[1], color_b[2], 255);
 				SDL_RenderFillRect(m_renderer, &rec);
 			}
+		}
+	}
+}
 
+void Game::RenderPieces() {
+	for (int x = 0; x < 8; x++) {
+		for (int y = 0; y < 8; y++) {
 			// Draw piece texture
 			if (board[y][x] != ChessPiece::EMPTY) {
 				DrawPiece(m_renderer, textures, board[y][x], x, y, cell_size);
@@ -60,7 +66,11 @@ void Game::Render()
 {
 	RenderBoard();
 
-	MouseHandler::Render(m_renderer, cell_size);
+	MouseHandler::Render(m_renderer, cell_size, show_moves, board, color_c);
+
+	RenderPieces();
+
+	MouseHandler::RenderSelectedPiece(m_renderer, cell_size);
 }
 
 void Game::LoadTextures()

@@ -16,6 +16,7 @@ public:
 	void Update();
 	void Render();
 	void RenderBoard();
+	void RenderPieces();
 
 	void LoadTextures();
 	void UnloadTextures();
@@ -23,8 +24,11 @@ public:
 	ChessBoard board{};
 	int color_a[3];
 	int color_b[3];
+	int color_c[3];
 
 	int cell_size = 50;
+
+	bool show_moves;
 
 private:
 	SDL_Renderer* m_renderer = nullptr;

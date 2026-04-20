@@ -47,8 +47,11 @@ void UI::Build(ChessBoard& board)
 
 	ImGui::ColorEdit3("A", color_a);
 	ImGui::ColorEdit3("B", color_b);
+	ImGui::ColorEdit3("C", color_c);
 
 	ImGui::SliderInt("CELL SIZE", &cell_size, 2, 100);
+
+	ImGui::Checkbox("SHOW MOVES", &show_moves);
 
 	ImGui::End();
 
@@ -60,7 +63,7 @@ void UI::Render()
 	ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), m_renderer);
 }
 
-void UI::HandleColors(int(&color_a)[3], int(&color_b)[3])
+void UI::HandleColors(int(&color_a)[3], int(&color_b)[3], int(&color_c)[3])
 {
 	color_a[0] = this->color_a[0] * 255;
 	color_a[1] = this->color_a[1] * 255;
@@ -69,9 +72,19 @@ void UI::HandleColors(int(&color_a)[3], int(&color_b)[3])
 	color_b[0] = this->color_b[0] * 255;
 	color_b[1] = this->color_b[1] * 255;
 	color_b[2] = this->color_b[2] * 255;
+
+	color_c[0] = this->color_c[0] * 255;
+	color_c[1] = this->color_c[1] * 255;
+	color_c[2] = this->color_c[2] * 255;
 }
 
-void UI::HandelCellSize(int& cell_size)
+void UI::HandleCellSize(int& cell_size)
 {
 	cell_size = this->cell_size;
 }
+
+void UI::HandleShowMoves(bool& show_moves)
+{
+	show_moves = this->show_moves;
+}
+
