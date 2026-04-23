@@ -4,18 +4,24 @@
 #include "../ui/ui.h"
 #include "../game/game.h"
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
+struct WindowSettings {
+	const char* title;
+	int width;
+	int height;
+	SDL_WindowFlags window_flags;
+};
 
 class Window
 {
 public:
-	Window();
+	Window(WindowSettings& settings);
 	~Window();
 
 	int Run();
 
 private:
+	WindowSettings settings;
+
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
 	SDL_Surface* surface = nullptr;

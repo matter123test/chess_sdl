@@ -3,18 +3,14 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3_image/SDL_image.h>
 
-Window::Window()
+Window::Window(WindowSettings& settings) : settings(settings)
 {
 	if (!SDL_Init(SDL_INIT_VIDEO)) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
 		Stop(3);
 	}
 
-	auto window_flags = static_cast<SDL_WindowFlags>(
-		SDL_WINDOW_RESIZABLE
-	);
-
-	window = SDL_CreateWindow("chess", WINDOW_WIDTH, WINDOW_HEIGHT, window_flags);
+	window = SDL_CreateWindow(settings.title, settings.width, settings.height, settings.window_flags);
 	if (!window) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create window: %s", SDL_GetError());
 		Stop(3);
