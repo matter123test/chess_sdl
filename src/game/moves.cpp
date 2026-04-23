@@ -1,13 +1,15 @@
 #include "moves.h"
 
-const std::array<Move, 2> W_PAWN_MOVES = {
+const std::array<Move, 3> W_PAWN_MOVES = {
 	Move{-1, -1}, // Top left
-	Move{ 1, -1}  // Top right
+	Move{ 1, -1}, // Top right
+	Move{ 0, -1}  // Top
 };
 
-const std::array<Move, 2> B_PAWN_MOVES = {
+const std::array<Move, 3> B_PAWN_MOVES = {
 	Move{-1, 1}, // Bottom left
-	Move{ 1, 1}  // Bottom right
+	Move{ 1, 1}, // Bottom right
+	Move{ 0, 1}  // Bottom
 };
 
 const std::array<Move, 8> KING_MOVES = {
@@ -42,10 +44,10 @@ const std::array<Move, 8> KNIGHT_MOVES = {
 };
 
 template<size_t N>
-void AddToMoves(std::vector<Move>& moves, std::array<Move, N> moveset) {
+static void AddToMoves(std::vector<Move>& moves, std::array<Move, N> moveset) {
 	for (auto& m : moveset) moves.push_back(m);
 }
-void AddToMoves(std::vector<Move>& moves, std::vector<Move> moveset) {
+static void AddToMoves(std::vector<Move>& moves, std::vector<Move> moveset) {
 	for (auto& m : moveset) moves.push_back(m);
 }
 
